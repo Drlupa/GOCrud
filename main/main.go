@@ -9,7 +9,7 @@ import (
 	"strconv"
     _ "github.com/go-sql-driver/mysql"
     "github.com/gorilla/mux"
-	"github.com/Drlupa/GOCrud/crud"
+	"github.com/Drlupa/GOCrud"
 )
 
 const (
