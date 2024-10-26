@@ -1,15 +1,28 @@
-package GoCrud
+package crud
 
+import (
+	"database/sql"
+	"encoding/json"
+	"fmt"
+	"net/http"
+    _ "github.com/go-sql-driver/mysql"
+)
 
-type USER struct {
+type User struct {
 	ID int
 	Name string
 	Email string
 }
 
+const (
+	dbDriver  = "mysql"
+	dbUser = "gocrudapi"
+	dbPass = "admin"
+	dbName = "gocrudapi"
+)
 
 func createUserHandler(w http.ResponseWriter, r *http.Request) {
-	db, err = sql.open(dbDriver, dbUser+":"+dbPass+"@/"+dbName)
+	db, err := sql.Open(dbDriver, dbUser+":"+dbPass+"@/"+dbName)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -27,4 +40,13 @@ func createUserHandler(w http.ResponseWriter, r *http.Request) {
    
 	   w.WriteHeader(http.StatusCreated)
 	   fmt.Fprintln(w, "User created successfully")
+}
+
+func CreateUser(db *sql.DB, name, email string) error {
+    query := "INSERT INTO users (name, email) VALUES (?, ?)"
+    _, err := db.Exec(query, name, email)
+    if err != nil {
+        return err
+    }
+    return nil
 }
