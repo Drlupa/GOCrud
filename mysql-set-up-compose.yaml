@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: mysql:9.1.0
+    container_name: mysql-server
+    environment:
+      MYSQL_ROOT_PASSWORD: gocrud
+      MYSQL_DATABASE: gocrudapi
+      MYSQL_USER: gocrudapi
+      MYSQL_PASSWORD: admin
+    network_mode: host
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/postgresql/data
+
+
+volumes:
+  mysql_data:
+
+
