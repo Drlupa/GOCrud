@@ -73,7 +73,7 @@ func CreateUser(db *sql.DB, name, email string) error {
 }
 
 func GetUserById(db *sql.DB, id int) error {
-	query := "SELECT * FROM users WHERE id=(id) VALUES (?)"
+	query := "SELECT * FROM users WHERE id=?"
 	_, err := db.Exec(query, id)
 	if err != nil {
 		return err
