@@ -1,15 +1,10 @@
 package main
 
 import (
-	_ "database/sql"
-	_ "encoding/json"
-	_ "fmt"
 	"log"
 	"net/http"
-	_ "strconv"
 
 	"github.com/Drlupa/GOCrud/crud"
-	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
 )
 
@@ -18,7 +13,7 @@ func main() {
 
 	r.HandleFunc("/user", crud.CreateUserHandler).Methods("POST")
 	r.HandleFunc("/user/{id}", crud.GetUserHandler).Methods("GET")
-	// r.HandleFunc("/user/{id}", updateUserHandler).Methods("PUT")
+	r.HandleFunc("/user/{id}", crud.UpdateUserHandler).Methods("PUT")
 	r.HandleFunc("/user/{id}", crud.DeleteUserHandler).Methods("DELETE")
 
 	log.Println("Server listening on :8090")

@@ -96,6 +96,34 @@ func DeleteUserHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, "User deleted succesfully")
 }
 
+func UpdateUserHandler(w http.ResponseWriter, r *http.Request) {
+	db, err := sql.Open(dbDriver, dbUser+":"+dbPass+"@/"+dbName)
+	if err != nil {
+		panic(err.Error())
+	}
+	defer db.Close()
+
+	var user User
+
+	variables := mux.Vars(r)
+	idStr := variables["id"]
+	userID, err := strconv.Atoi(idStr)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	json.NewDecoder(r.Body).Decode(&user)
+
+	err = UpdateUserById(db, user.Name, user.Email, userID)
+	if err != nil {
+		http.Error(w, "Failed to create user", http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusCreated)
+	fmt.Fprintln(w, "User updated successfully")
+}
+
 func CreateUser(db *sql.DB, name, email string) error {
 	query := "INSERT INTO users (name, email) VALUES (?, ?)"
 	_, err := db.Exec(query, name, email)
@@ -116,6 +144,15 @@ func GetUserById(db *sql.DB, id int) (*User, error) {
 func DeleteUserById(db *sql.DB, id int) error {
 	query := "DELETE FROM users WHERE id=?"
 	_, err := db.Exec(query, id)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func UpdateUserById(db *sql.DB, name string, email string, id int) error {
+	query := "UPDATE users SET name = ?, email = ? WHERE id = ?"
+	_, err := db.Exec(query, name, email, id)
 	if err != nil {
 		return err
 	}
