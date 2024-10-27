@@ -2,29 +2,28 @@
 
 Table of content:
 + [Description](#Description)
-+ [mysql](#mysql)
++ [mysql](#Usage)
 
 
 ## Description
-This is Golang CRUD application to manipulate mysql DB via API.
 
-## Implementation
-before start mysql DB in needed to be initialized, the mysql setting presented in mysql-set-up-compose.yaml and docker compsoe must be instaleld.
+all crud functions are in file [crud.go](https://github.com/Drlupa/GOCrud/blob/main/crud/crud.go) in crud directory
 
-## mysql-set-up
+implementation is in [main.go](https://github.com/Drlupa/GOCrud/blob/main/main/main.go) file
 
-### 1)launch mysql using docker compose
+## Usage
 
-```bash
-docker compose -f mysql-set-up-compose.yaml up
+to lauch go http server you need to have golang preinstalled and mysql server launched
+
+```GO
+git clone https://github.com/Drlupa/GOCrud.git
+cd GOCrud/main
+go run main.go
 ```
 
-### 2) Create table for users
+you can try following request to check result of handlers
 
-```SQL
-  CREATE TABLE users (
-  id INT PRIMARY KEY AUTO_INCREMENT,
-  name VARCHAR(50),
-  email VARCHAR(100)
-);
-```
++   curl -X POST -H "Content-Type: application/json" -d '{"Name":"John Doe","Email":"john@example.com"}' http://localhost:8090/user  # for creating user with api 
++   curl http://localhost:8090/user/{id} # getting users info by id
++   curl -X PUT -H "Content-Type: application/json" -d '{"Name":"Jane Doe","Email":"jane@example.com"}' http://localhost:8090/user/{id} # updationg user info by id
++   curl -X DELETE http://localhost:8090/user/{id} # deleting user by id
