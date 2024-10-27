@@ -22,21 +22,27 @@ go run main.go
 ```
 
 you can try following request to check result of handlers
-
+---
 
 for creating user with api 
 ```bash
 curl -X POST -H "Content-Type: application/json" -d '{"Name":"John Doe","Email":"john@example.com"}' http://localhost:8090/user 
 ```
+---
+
 getting users info by id
 ```bash
 curl http://localhost:8090/user/{id}
 ```
 
+---
+
 updationg user info by id
 ```bash
 curl -X PUT -H "Content-Type: application/json" -d '{"Name":"Jane Doe","Email":"jane@example.com"}' http://localhost:8090/user/{id}
 ```
+
+---
 
 deleting user by id
 ```bash
