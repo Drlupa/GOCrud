@@ -13,20 +13,13 @@ import (
 	"github.com/gorilla/mux"
 )
 
-const (
-	dbDriver = "mysql"
-	dbUser   = "gocrudapi"
-	dbPass   = "admin"
-	dbName   = "gocrudapi"
-)
-
 func main() {
 	r := mux.NewRouter()
 
 	r.HandleFunc("/user", crud.CreateUserHandler).Methods("POST")
 	r.HandleFunc("/user/{id}", crud.GetUserHandler).Methods("GET")
 	// r.HandleFunc("/user/{id}", updateUserHandler).Methods("PUT")
-	// r.HandleFunc("/user/{id}", deleteUserHandler).Methods("DELETE")
+	r.HandleFunc("/user/{id}", crud.DeleteUserHandler).Methods("DELETE")
 
 	log.Println("Server listening on :8090")
 	log.Fatal(http.ListenAndServe(":8090", r))
