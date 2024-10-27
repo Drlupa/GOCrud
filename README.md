@@ -1,10 +1,5 @@
 # GOCrud
 
-Table of content:
-+ Create
-+ [mysql](#mysql)
-
-
 ## Description
 This is Golang CRUD application to manipulate mysql DB via API.
 
