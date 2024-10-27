@@ -60,13 +60,15 @@ func GetUserHandler(w http.ResponseWriter, r *http.Request) {
 		panic(err.Error())
 	}
 
-	err = GetUserById(db, userID)
+	user, err := GetUserById(db, userID)
 	if err != nil {
-		http.Error(w, "Failed to get user", http.StatusInternalServerError)
+		http.Error(w, "Failed to get user or user not found", http.StatusNotFound)
+		return
 	}
 
-	w.WriteHeader(http.StatusCreated)
-	fmt.Fprintln(w, "User was got successfully")
+	w.Header().Set("Content-Type", "application/json")
+
+	json.NewEncoder(w).Encode(user)
 }
 
 func CreateUser(db *sql.DB, name, email string) error {
@@ -78,11 +80,10 @@ func CreateUser(db *sql.DB, name, email string) error {
 	return nil
 }
 
-func GetUserById(db *sql.DB, id int) error {
+func GetUserById(db *sql.DB, id int) (*User, error) {
 	query := "SELECT * FROM users WHERE id=?"
-	_, err := db.Exec(query, id)
-	if err != nil {
-		return err
-	}
-	return nil
+	row := db.QueryRow(query, id)
+	user := &User{}
+	row.Scan(&user.ID, &user.Name, &user.Email)
+	return user, nil
 }
