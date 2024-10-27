@@ -2,7 +2,7 @@
 
 Table of content:
 + [Description](#Description)
-+ [mysql](#Usage)
++ [Usage](#Usage)
 
 
 ## Description
