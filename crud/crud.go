@@ -5,8 +5,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strconv"
 
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/gorilla/mux"
 )
 
 type User struct {
@@ -50,11 +52,15 @@ func GetUserHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer db.Close()
 
-	var user User
+	variables := mux.Vars(r)
+	idStr := variables["id"]
 
-	json.NewDecoder(r.Body).Decode(&user)
+	userID, err := strconv.Atoi(idStr)
+	if err != nil {
+		panic(err.Error())
+	}
 
-	err = GetUserById(db, user.ID)
+	err = GetUserById(db, userID)
 	if err != nil {
 		http.Error(w, "Failed to get user", http.StatusInternalServerError)
 	}
